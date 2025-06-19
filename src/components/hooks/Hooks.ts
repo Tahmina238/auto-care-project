@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 export type ProductCategory = "electronics" | "fashion" | "home" | "books"; // example
-import { products as initialProducts } from "../data/products1"; // ✅ points to actual product data
+import { products as initialProducts } from "../data/products"; // ✅ points to actual product data
 import { Product } from "@/types";
 
 interface UseProductsReturn {

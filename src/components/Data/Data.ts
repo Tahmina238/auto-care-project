@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 export type ProductCategory = "car"; // example
-import { products as initialProducts } from "./products1"; // ✅ Correct
+import { products as initialProducts } from "./products"; // ✅ Correct
 import { Product } from "@/types";
 
 interface UseProductsReturn {
