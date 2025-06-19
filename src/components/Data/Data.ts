@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import type { Product, ProductCategory } from "@/types";
-import { products as initialProducts } from "@/data/products";
+import { useState, useCallback, useEffect } from "react";
+export type ProductCategory = "car"; // example
+import { products as initialProducts } from "./products1"; // ✅ Correct
+import { Product } from "@/types";
 
 interface UseProductsReturn {
   products: Product[];
+
   filteredProducts: Product[];
   filterByCategory: (category: ProductCategory | null) => void;
   filterByPriceRange: (min: number, max: number) => void;
@@ -24,7 +26,8 @@ export function useProducts(): UseProductsReturn {
     max: number;
   } | null>(null);
 
-  const applyFilters = useCallback(() => {
+  // Apply filters whenever activeCategory or priceRange changes
+  useEffect(() => {
     let result = [...products];
 
     if (activeCategory) {
@@ -41,27 +44,18 @@ export function useProducts(): UseProductsReturn {
     setFilteredProducts(result);
   }, [products, activeCategory, priceRange]);
 
-  const filterByCategory = useCallback(
-    (category: ProductCategory | null) => {
-      setActiveCategory(category);
-      applyFilters();
-    },
-    [applyFilters]
-  );
+  const filterByCategory = useCallback((category: ProductCategory | null) => {
+    setActiveCategory(category);
+  }, []);
 
-  const filterByPriceRange = useCallback(
-    (min: number, max: number) => {
-      setPriceRange({ min, max });
-      applyFilters();
-    },
-    [applyFilters]
-  );
+  const filterByPriceRange = useCallback((min: number, max: number) => {
+    setPriceRange({ min, max });
+  }, []);
 
   const resetFilters = useCallback(() => {
     setActiveCategory(null);
     setPriceRange(null);
-    setFilteredProducts(products);
-  }, [products]);
+  }, []);
 
   return {
     products,

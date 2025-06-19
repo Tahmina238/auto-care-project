@@ -50,7 +50,7 @@ export default function Navbar() {
           </div>
         </header>
 
-        <main className="container  mx-auto px-4  ">
+        <main className="container  mx-auto px-8  ">
           <div className="flex  items-center">
             <div className="  flex flex-col item-center space-y-2">
               <h1 className="text-7xl text-center  font-bold text-white leading-tight">

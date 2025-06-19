@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import type { Product, ProductCategory } from "@/types";
-import { products as initialProducts } from "";
+import { useState, useCallback, useEffect } from "react";
+export type ProductCategory = "electronics" | "fashion" | "home" | "books"; // example
+import { products as initialProducts } from "../data/products1"; // ✅ points to actual product data
+import { Product } from "@/types";
 
 interface UseProductsReturn {
   products: Product[];
@@ -13,7 +14,7 @@ interface UseProductsReturn {
 }
 
 export function useProducts(): UseProductsReturn {
-  const [products] = useState<Product[]>(initialProducts);
+  const [products] = useState<Product[]>(initialProducts); // base data
   const [filteredProducts, setFilteredProducts] =
     useState<Product[]>(initialProducts);
   const [activeCategory, setActiveCategory] = useState<ProductCategory | null>(
@@ -24,7 +25,8 @@ export function useProducts(): UseProductsReturn {
     max: number;
   } | null>(null);
 
-  const applyFilters = useCallback(() => {
+  // Re-filter products when category or price changes
+  useEffect(() => {
     let result = [...products];
 
     if (activeCategory) {
@@ -41,27 +43,18 @@ export function useProducts(): UseProductsReturn {
     setFilteredProducts(result);
   }, [products, activeCategory, priceRange]);
 
-  const filterByCategory = useCallback(
-    (category: ProductCategory | null) => {
-      setActiveCategory(category);
-      applyFilters();
-    },
-    [applyFilters]
-  );
+  const filterByCategory = useCallback((category: ProductCategory | null) => {
+    setActiveCategory(category);
+  }, []);
 
-  const filterByPriceRange = useCallback(
-    (min: number, max: number) => {
-      setPriceRange({ min, max });
-      applyFilters();
-    },
-    [applyFilters]
-  );
+  const filterByPriceRange = useCallback((min: number, max: number) => {
+    setPriceRange({ min, max });
+  }, []);
 
   const resetFilters = useCallback(() => {
     setActiveCategory(null);
     setPriceRange(null);
-    setFilteredProducts(products);
-  }, [products]);
+  }, []);
 
   return {
     products,
